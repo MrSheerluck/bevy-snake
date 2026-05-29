@@ -75,7 +75,15 @@ fn grid_to_world(pos: GridPosition) -> Vec3 {
 
 fn main() {
     App::new()
-        .add_plugins(DefaultPlugins)
+        .add_plugins(DefaultPlugins.set(WindowPlugin {
+            primary_window: Some(Window {
+                title: "Snake".into(),
+                resolution: bevy::window::WindowResolution::new(600, 680),
+                resizable: false,
+                ..default()
+            }),
+            ..default()
+        }))
         .init_state::<GameState>()
         .add_systems(Startup, setup)
         .add_systems(OnEnter(GameState::GameOver), show_game_over)
@@ -161,7 +169,7 @@ fn setup(mut commands: Commands, asset_server: Res<AssetServer>) {
             ..default()
         },
         TextColor(Color::WHITE),
-        Transform::from_xyz(0.0, 320.0, 0.0),
+        Transform::from_xyz(0.0, 290.0, 0.0),
     ));
 }
 
@@ -322,7 +330,7 @@ fn update_score_text(
                     ..default()
                 },
                 TextColor(Color::srgb(1.0, 1.0, 0.3)),
-                Transform::from_xyz(0.0, 320.0, 2.0),
+                Transform::from_xyz(0.0, 290.0, 2.0),
             ));
         }
     }
@@ -340,7 +348,7 @@ fn update_score_pop(
             continue;
         }
         let t = pop.0.fraction_remaining();
-        transform.translation.y = 320.0 + (1.0 - t) * 30.0;
+        transform.translation.y = 290.0 + (1.0 - t) * 30.0;
         color.0.set_alpha(t);
     }
 }
